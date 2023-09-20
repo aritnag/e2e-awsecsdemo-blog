@@ -1,0 +1,35 @@
+{
+  "family": "demo-blogposte2edemo-tasks",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "containerDefinitions": [
+    {
+      "name": "blogposte2edemo",
+      "image": "127745533311.dkr.ecr.eu-north-1.amazonaws.com/blogposte2edemo:6f27764b",
+      "memory": 512,
+      "cpu": 256, // Specify the CPU units as needed
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 8080,
+          "hostPort": 8080
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "blogposte2edemo",
+          "awslogs-region": "eu-north-1",
+          "awslogs-stream-prefix": "ecs"
+        }
+      },
+      "healthCheck": {
+        "command": ["CMD-SHELL", "curl -f http://localhost:8080/health || exit 1"],
+        "interval": 30,
+        "timeout": 5,
+        "retries": 3
+      }
+    }
+  ]
+}
+
